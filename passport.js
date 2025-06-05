@@ -6,7 +6,7 @@ const verifyCallback = async (username, password, done) => {
   try {
     const prisma = new PrismaClient();
 
-    const user = prisma.user.findUnique({
+    const user = await prisma.user.findFirst({
       where: {
         username: username,
       },
@@ -14,7 +14,7 @@ const verifyCallback = async (username, password, done) => {
 
     await prisma.$disconnect();
 
-    const userRow = user.length === 0 ? null : user[0];
+    const userRow = user.length === 0 ? null : user;
     const userPassword = user.length === 0 ? null : userRow["password"];
 
     if (!user) {
@@ -29,11 +29,11 @@ const verifyCallback = async (username, password, done) => {
       return done(null, false, { message: "Incorrect password" });
     }
   } catch (e) {
-    done(err);
+    done(e);
   }
 };
 
-const strategy = LocalStrategy(verifyCallback);
+const strategy = new LocalStrategy(verifyCallback);
 
 passport.use(strategy);
 
@@ -45,7 +45,7 @@ passport.deserializeUser(async (id, done) => {
   try {
     const prisma = new PrismaClient();
 
-    const user = prisma.user.findUnique({
+    const user = prisma.user.findFirst({
       where: {
         id: id,
       },
@@ -55,6 +55,6 @@ passport.deserializeUser(async (id, done) => {
 
     done(null, user[0]);
   } catch (e) {
-    done(err);
+    done(e);
   }
 });
