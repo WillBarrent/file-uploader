@@ -8,6 +8,7 @@ const passport = require('passport');
 const expressSession = require("express-session");
 const { PrismaSessionStore } = require("@quixo3/prisma-session-store");
 const { PrismaClient } = require("./generated/prisma");
+const { hashPassword } = require("./utils/passwordUtils");
 
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
@@ -52,14 +53,16 @@ app.post("/sign-up", async (req, res) => {
   const {username, password} = req.body;
   const prisma = new PrismaClient();
 
+  const hashedPassword = await hashPassword(password);
+
   await prisma.user.create({
     data: {
       username: username,
-      password: password,
+      password: hashedPassword,
     }
   });
 
-  res.redirect("/");
+  res.redirect("/login");
 });
 
 app.get("/login", async (req, res) => {
