@@ -1,5 +1,6 @@
 const { PrismaClient } = require("./generated/prisma");
 const passport = require("passport");
+const { validatePassword } = require("./utils/passwordUtils");
 const LocalStrategy = require("passport-local").Strategy;
 
 const verifyCallback = async (username, password, done) => {
@@ -45,15 +46,17 @@ passport.deserializeUser(async (id, done) => {
   try {
     const prisma = new PrismaClient();
 
-    const user = prisma.user.findFirst({
+    const user = await prisma.user.findFirst({
       where: {
         id: id,
       },
     });
 
+    console.log(user);
+
     await prisma.$disconnect();
 
-    done(null, user[0]);
+    done(null, user);
   } catch (e) {
     done(e);
   }
