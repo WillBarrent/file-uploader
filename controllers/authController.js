@@ -1,11 +1,15 @@
 const { PrismaClient } = require("../generated/prisma");
 const { hashPassword } = require("../utils/passwordUtils");
-const passport = require('passport');
+const passport = require("passport");
 
 const signUpGet = (req, res) => {
   res.render("sign-up");
 };
 const signUpPost = async (req, res) => {
+  if (req.isAuthenticated()) {
+    return res.redirect("/upload-file");
+  }
+
   const { username, password } = req.body;
   const prisma = new PrismaClient();
 
@@ -22,11 +26,15 @@ const signUpPost = async (req, res) => {
 };
 
 const loginGet = (req, res) => {
+  if (req.isAuthenticated()) {
+    return res.redirect("/upload-file");
+  }
+
   res.render("login");
 };
 const loginPost = passport.authenticate("local", {
   failureRedirect: "/login",
-  successRedirect: "/",
+  successRedirect: "/upload-file",
   failureMessage: true,
 });
 
