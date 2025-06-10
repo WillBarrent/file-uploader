@@ -11,6 +11,9 @@ const { PrismaClient } = require("./generated/prisma");
 const { hashPassword } = require("./utils/passwordUtils");
 const authRouter = require("./routes/authRoute");
 
+const multer = require("multer");
+const upload = multer({ dest: "./uploads" });
+
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
@@ -37,7 +40,17 @@ require("./passport");
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use("/", authRouter)
+app.use("/", authRouter);
+
+app.get("/upload-file", (req, res) => {
+  res.render('test');
+});
+
+app.post("/upload-file", upload.single('file-name'), function (req, res) {
+  console.log(req.file, req.body);
+
+  res.redirect("/");
+});
 
 const PORT = 3000;
 
