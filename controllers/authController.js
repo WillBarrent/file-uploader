@@ -34,7 +34,7 @@ const loginGet = (req, res) => {
 };
 const loginPost = passport.authenticate("local", {
   failureRedirect: "/login",
-  successRedirect: "/upload-file",
+  successRedirect: "/",
   failureMessage: true,
 });
 
