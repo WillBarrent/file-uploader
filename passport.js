@@ -15,12 +15,11 @@ const verifyCallback = async (username, password, done) => {
 
     await prisma.$disconnect();
 
-    const userRow = user.length === 0 ? null : user;
-    const userPassword = user.length === 0 ? null : userRow["password"];
-
     if (!user) {
       return done(null, false, { message: "User not found" });
     }
+    
+    const userPassword = user["password"];
 
     const isValid = await validatePassword(password, userPassword);
 
