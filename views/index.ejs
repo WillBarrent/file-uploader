@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>All files</title>
+  <style>
+    .all-files {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .all-files__file {
+      display: flex;
+      gap: 15px;
+    }
+  </style>
+</head>
+
+<body>
+  <a href="/folders/my-drive">My Folders</a>
+  <h2>All Files</h2>
+  <div class="all-files">
+    <% files.forEach(function(file) { %>
+      <div class="all-files__file">
+        <div class="all-files__file--name"><%= file.originalName %></div>
+        <form action="/download/<%= file.id %>" method="post">
+          <input type="hidden" name="file_to_download" value="<%= file.path %>">
+          <input type="hidden" name="file_name" value="<%= file.originalName %>">
+          <button type="submit">Download</button>
+        </form>
+      </div>
+    <% }); %>
+  </div>
+</body>
+
+</html>
