@@ -8,21 +8,71 @@ async function indexGet(req, res) {
   if (!req.isAuthenticated()) {
     return res.redirect("login");
   }
-  
-  res.render("index");
+
+  const prisma = new PrismaClient();
+
+  const files = await prisma.file.findMany();
+
+  res.render("index", {
+    files: files,
+  });
+}
+
+async function myFoldersGet(req, res) {
+  if (!req.isAuthenticated()) {
+    return res.redirect("login");
+  }
+
+  const { folderName } = req.params;
+
+  res.render("folders", {
+    folderName: folderName,
+  });
 }
 
 const fileUploadPost = [
   upload.single("file"),
   async function (req, res) {
+    const { folderName } = req.params;
+    const { filename, originalname, path, size } = req.file;
+    const uploadTime = new Date();
 
-    console.log(req.file);
+    const prisma = new PrismaClient();
+
+    await prisma.folder.update({
+      where: {
+        name: folderName,
+      },
+      data: {
+        files: {
+          create: [
+            {
+              fileName: filename,
+              originalName: originalname,
+              path: path,
+              size: size,
+              uploadTime: uploadTime,
+            },
+          ],
+        },
+      },
+    });
+
+    await prisma.$disconnect();
 
     res.redirect("/");
   },
 ];
 
+async function fileDownloadPost(req, res) {
+  const { file_to_download: fileToDownload, file_name: fileName } = req.body;
+
+  res.download(fileToDownload, fileName);
+}
+
 module.exports = {
   indexGet,
   fileUploadPost,
+  myFoldersGet,
+  fileDownloadPost,
 };
