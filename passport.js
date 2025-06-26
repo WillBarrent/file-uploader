@@ -51,8 +51,6 @@ passport.deserializeUser(async (id, done) => {
       },
     });
 
-    console.log(user);
-
     await prisma.$disconnect();
 
     done(null, user);

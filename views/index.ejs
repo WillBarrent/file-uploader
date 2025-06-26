@@ -20,18 +20,30 @@
 </head>
 
 <body>
-  <a href="/folders/my-drive">My Folders</a>
-  <h2>All Files</h2>
+  <h2>File Uploader</h2>
+  <form action="/add-folder" method="post">
+    <input type="text" name="newFolderName" placeholder="Folder name">
+    <button type="submit">Create</button>
+  </form>
+  <div class="all-folders">
+    <% folders.forEach(function(folder) { %>
+    <div class="all-folders__folder">
+      <div class="all-folders__folder--name">
+        <a href="/folders/<%= folder.name %>"><%= folder.name %></a>
+      </div>
+    </div>
+    <% }); %>
+  </div>
   <div class="all-files">
     <% files.forEach(function(file) { %>
-      <div class="all-files__file">
-        <div class="all-files__file--name"><%= file.originalName %></div>
-        <form action="/download/<%= file.id %>" method="post">
-          <input type="hidden" name="file_to_download" value="<%= file.path %>">
-          <input type="hidden" name="file_name" value="<%= file.originalName %>">
-          <button type="submit">Download</button>
-        </form>
-      </div>
+    <div class="all-files__file">
+      <div class="all-files__file--name"><%= file.originalName %></div>
+      <form action="/download/<%= file.id %>" method="post">
+        <input type="hidden" name="file_to_download" value="<%= file.path %>">
+        <input type="hidden" name="file_name" value="<%= file.originalName %>">
+        <button type="submit">Download</button>
+      </form>
+    </div>
     <% }); %>
   </div>
 </body>

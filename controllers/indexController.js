@@ -6,27 +6,42 @@ const upload = multer({
 
 async function indexGet(req, res) {
   if (!req.isAuthenticated()) {
-    return res.redirect("login");
+    return res.redirect("/login");
   }
 
   const prisma = new PrismaClient();
 
   const files = await prisma.file.findMany();
+  const folders = await prisma.folder.findMany();
+
+  console.log(folders);
 
   res.render("index", {
     files: files,
+    folders: folders,
   });
 }
 
 async function myFoldersGet(req, res) {
   if (!req.isAuthenticated()) {
-    return res.redirect("login");
+    return res.redirect("/login");
   }
 
   const { folderName } = req.params;
 
+  const prisma = new PrismaClient();
+
+  const files = await prisma.file.findMany({
+    where: {
+      folder: {
+        name: folderName,
+      },
+    },
+  });
+
   res.render("folders", {
     folderName: folderName,
+    files: files,
   });
 }
 
@@ -70,9 +85,26 @@ async function fileDownloadPost(req, res) {
   res.download(fileToDownload, fileName);
 }
 
+async function addFolderPost(req, res) {
+  const { newFolderName } = req.body;
+
+  const prisma = new PrismaClient();
+  const userId = req.session.passport.user;
+
+  await prisma.folder.create({
+    data: {
+      name: newFolderName,
+      userId: userId,
+    },
+  });
+
+  res.redirect("/");
+}
+
 module.exports = {
   indexGet,
   fileUploadPost,
   myFoldersGet,
   fileDownloadPost,
+  addFolderPost,
 };

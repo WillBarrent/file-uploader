@@ -6,6 +6,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Folder page</title>
   <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .all-files {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .all-files__file {
+      display: flex;
+      gap: 15px;
+    }
   </style>
 </head>
 
@@ -16,6 +31,20 @@
     <input type="file" name="file">
     <button type="submit">Upload</button>
   </form>
+
+  <div class="all-files">
+    <% files.forEach(function(file) { %>
+    <div class="all-files__file">
+      <div class="all-files__file--name"><%= file.originalName %></div>
+      <form action="/download/<%= file.id %>" method="post">
+        <input type="hidden" name="file_to_download" value="<%= file.path %>">
+        <input type="hidden" name="file_name" value="<%= file.originalName %>">
+        <button type="submit">Download</button>
+      </form>
+    </div>
+    <% }); %>
+  </div>
+  
 </body>
 
 </html>
