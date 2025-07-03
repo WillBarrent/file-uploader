@@ -14,8 +14,6 @@ async function indexGet(req, res) {
   const files = await prisma.file.findMany();
   const folders = await prisma.folder.findMany();
 
-  console.log(folders);
-
   res.render("index", {
     files: files,
     folders: folders,
@@ -39,9 +37,16 @@ async function myFoldersGet(req, res) {
     },
   });
 
-  res.render("folders", {
+  res.render("folder", {
     folderName: folderName,
-    files: files,
+    files: files.map((file) => {
+      const uTime = file.uploadTime;
+
+      return {
+        ...file,
+        uploadTime: `${uTime.getDate()}/${uTime.getMonth()}/${uTime.getFullYear()}`,
+      };
+    }),
   });
 }
 
