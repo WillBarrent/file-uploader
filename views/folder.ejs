@@ -8,6 +8,15 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/style.css">
+  <script src="/index.js" defer></script>
+
+  <style>
+    .storage__columns,
+    .storage__folder,
+    .storage__file {
+      grid-template-columns: 2fr 1fr 1fr 1fr 2fr;
+    }
+  </style>
 </head>
 
 <body>
@@ -25,12 +34,12 @@
       </div>
       <div class="file-uploade__max-size">Maximum file size 50 MB.</div>
       <button class="file-upload__upload--submit" type="submit">Submit</button>
-      <a href="#" class="file-upload__close-button">
+      <button class="file-upload__close-button">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
           <title>close</title>
           <path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
         </svg>
-      </a>
+      </button>
     </form>
   </div>
 
@@ -44,33 +53,36 @@
     </header>
     <main class="main">
       <div class="main__actions">
-        <button class="main__actions--add-folder">Add folder</button>
+        <button class="main__actions--add-file">Add file</button>
+        <!-- <button class="main__actions--add-folder">Add folder</button> -->
       </div>
       <div class="storage">
         <div class="storage__columns">
           <div class="storage__column">Name</div>
           <div class="storage__column">Size</div>
           <div class="storage__column">Type</div>
+          <div class="storage__column">Uploaded</div>
           <div class="storage__column">Actions</div>
         </div>
-        <div class="storage__folders">
-          <% folders.forEach((folder) => { %>
-          <div class="storage__folder">
-            <div class="storage__folder--info">
-              <div class="storage__folder--icon">
+        <div class="storage__files">
+          <% files.forEach((file) => { %>
+          <div class="storage__file">
+            <div class="storage__file--info">
+              <div class="storage__file--icon">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                  <title>folder</title>
-                  <path d="M10,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V8C22,6.89 21.1,6 20,6H12L10,4Z" />
+                  <title>file-document</title>
+                  <path d="M13,9H18.5L13,3.5V9M6,2H14L20,8V20A2,2 0 0,1 18,22H6C4.89,22 4,21.1 4,20V4C4,2.89 4.89,2 6,2M15,18V16H6V18H15M18,14V12H6V14H18Z" />
                 </svg>
               </div>
-              <a href="/folders/<%= folder.name %>" class="storage__folder--name"><%= folder.name %></a>
+              <div class="storage__file--name"><%= file.originalName %></div>
             </div>
-            <div class="storage__folder--size">50 GB</div>
-            <div class="storage__folder--type">Folder</div>
-            <div class="storage__folder--actions">
-              <button class="storage__folder--actions-info">Info</button>
-              <button class="storage__folder--actions-edit">Edit</button>
-              <button class="storage__folder--actions-delete">Delete</button>
+            <div class="storage__file--size">50 GB</div>
+            <div class="storage__file--type">File</div>
+            <div class="storage__file--uploaded"><%= file.uploadTime %></div>
+            <div class="storage__file--actions">
+              <button class="storage__file--actions-info">Info</button>
+              <button class="storage__file--actions-edit">Edit</button>
+              <button class="storage__file--actions-delete">Delete</button>
             </div>
           </div>
           <% }); %>
