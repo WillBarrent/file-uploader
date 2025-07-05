@@ -28,7 +28,6 @@ const signUpPost = async (req, res) => {
         create: [
           {
             name: "my-drive",
-            path: "/my-drive",
           },
         ],
       },
@@ -52,9 +51,20 @@ const loginPost = passport.authenticate("local", {
   failureMessage: true,
 });
 
+const logOutGet = async (req, res) => {
+  req.logout(function (err) {
+    if (err) {
+      return next(err);
+    }
+
+    res.redirect("/");
+  });
+};
+
 module.exports = {
   signUpGet,
   signUpPost,
   loginGet,
   loginPost,
+  logOutGet
 };
