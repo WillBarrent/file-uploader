@@ -291,3 +291,7 @@ body {
 
   cursor: pointer;
 }
+
+.file-upload__upload--file {
+  display: none;
+}
