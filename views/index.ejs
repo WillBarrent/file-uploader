@@ -8,29 +8,24 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/style.css">
+  <script src="/index.js" defer></script>
 </head>
 
 <body>
-  <div class="file-upload--wrapper">
-    <form class="file-upload">
-      <div class="file__upload__icon">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-          <title>upload</title>
-          <path d="M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5Z" />
-        </svg>
+  <div class="create-folder--wrapper">
+    <form method="post" action="/add-folder" class="create-folder">
+      <div class="create-folder--title">Create a new folder</div>
+      <div class="create-folder--folder-name">
+        <label for="folder-name" class="create-folder--folder-name--label">Folder name</label>
+        <input name="newFolderName" placeholder="Folder name" type="text" class="create-folder--folder-name--input" id="folder-name">
       </div>
-      <div class="file-upload__upload">
-        <button class="file-upload__upload--button" type="submit">Click to upload</button>
-        <div class="file-upload__additional">or drag and drop</div>
-      </div>
-      <div class="file-uploade__max-size">Maximum file size 50 MB.</div>
-      <button class="file-upload__upload--submit" type="submit">Submit</button>
-      <a href="#" class="file-upload__close-button">
+      <button type="submit" class="create-folder--submit">Create a folder</button>
+      <button type="button" class="create-folder__close-button">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
           <title>close</title>
           <path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
         </svg>
-      </a>
+      </button>
     </form>
   </div>
 
