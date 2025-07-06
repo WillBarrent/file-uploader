@@ -1,11 +1,13 @@
-const addFileButton = document.querySelector('.main__actions--add-file');
-const fileUploadForm = document.querySelector('.file-upload--wrapper');
-const fileUploadCloseButton = document.querySelector('.file-upload__close-button');
+const addFolderButton = document.querySelector(".main__actions--add-folder");
+const addFolderForm = document.querySelector(".create-folder--wrapper");
+const addFolderCloseButton = document.querySelector(
+  ".create-folder__close-button"
+);
 
-addFileButton.addEventListener('click', () => {
-    fileUploadForm.style.display = 'block';
+addFolderButton.addEventListener("click", () => {
+  addFolderForm.style.display = "block";
 });
 
-fileUploadCloseButton.addEventListener('click', () => {
-    fileUploadForm.style.display = 'none';
-})
+addFolderCloseButton.addEventListener("click", () => {
+  addFolderForm.style.display = "none";
+});

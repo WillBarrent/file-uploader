@@ -112,8 +112,6 @@ body {
 }
 
 .header__user--logout {
-  outline: none;
-  border: none;
   font-size: 18px;
   font-weight: 600;
   padding: 5px 10px;
@@ -122,6 +120,7 @@ body {
   border-radius: 3px;
 
   cursor: pointer;
+  text-decoration: none;
 }
 
 .main__actions {
@@ -223,7 +222,7 @@ body {
   fill: #f25c54;
 }
 
-.file-upload--wrapper {
+.file-upload--wrapper, .create-folder--wrapper {
   display: none;
 
   position: absolute;
@@ -231,7 +230,7 @@ body {
   width: 100%;
 }
 
-.file-upload {
+.file-upload, .create-folder {
   width: 500px;
 
   background-color: #fff;
@@ -277,7 +276,7 @@ body {
   padding: 5px 30px;
 }
 
-.file-upload__close-button > svg {
+.file-upload__close-button > svg, .create-folder__close-button > svg  {
   width: 30px;
   fill: #fff;
   background-color: #f25c54;
@@ -295,3 +294,47 @@ body {
 .file-upload__upload--file {
   display: none;
 }
+
+.create-folder {
+  padding: 40px 20px;
+}
+
+.create-folder--folder-name, .create-folder--submit {
+  width: 100%;
+}
+
+.create-folder--title {
+  text-align: center;
+  font-weight: 600;
+  font-size: 25px;
+}
+
+.create-folder--folder-name {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.create-folder--folder-name--label {
+  font-size: 20px;
+}
+
+.create-folder--folder-name--input {
+  padding: 5px 10px;
+  font-family: inherit;
+  font-size: 18px;
+}
+
+.create-folder--submit {
+  outline: none;
+  border: none;
+  font-size: 18px;
+  font-weight: 600;
+  padding: 10px 15px;
+  background-color: #f25c54;
+  color: #fff;
+  border-radius: 3px;
+
+  cursor: pointer;
+}
+
