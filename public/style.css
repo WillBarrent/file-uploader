@@ -13,6 +13,10 @@ body {
   position: relative;
 }
 
+a {
+  text-decoration: none;
+}
+
 .login {
   height: 100vh;
   display: flex;
@@ -222,7 +226,8 @@ body {
   fill: #f25c54;
 }
 
-.file-upload--wrapper, .create-folder--wrapper {
+.file-upload--wrapper,
+.create-folder--wrapper {
   display: none;
 
   position: absolute;
@@ -230,7 +235,8 @@ body {
   width: 100%;
 }
 
-.file-upload, .create-folder {
+.file-upload,
+.create-folder {
   width: 500px;
 
   background-color: #fff;
@@ -276,7 +282,8 @@ body {
   padding: 5px 30px;
 }
 
-.file-upload__close-button > svg, .create-folder__close-button > svg  {
+.file-upload__close-button > svg,
+.create-folder__close-button > svg {
   width: 30px;
   fill: #fff;
   background-color: #f25c54;
@@ -299,7 +306,8 @@ body {
   padding: 40px 20px;
 }
 
-.create-folder--folder-name, .create-folder--submit {
+.create-folder--folder-name,
+.create-folder--submit {
   width: 100%;
 }
 
@@ -338,3 +346,62 @@ body {
   cursor: pointer;
 }
 
+.file-info__wrapper {
+  padding: 50px;
+
+  height: 100vh;
+}
+
+.file-info {
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.file-info__logo {
+  font-size: 25px;
+  color: #000;  
+}
+
+.file-info__title {
+  font-size: 25px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #f25c54;
+} 
+
+.file-info__form {
+  width: 300px;
+
+  border: 1px solid #000;
+  padding: 40px 20px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.file-info__name--title, .file-info__uploaded--title, .file-info__size--title {
+  font-weight: 600;
+  color: #f7b267;
+
+  font-size: 18px;
+}
+
+.file-info__download {
+  margin-top: 10px;
+
+  outline: none;
+  border: none;
+  font-size: 18px;
+  font-weight: 600;
+  padding: 10px 15px;
+  background-color: #f25c54;
+  color: #fff;
+  border-radius: 3px;
+
+  cursor: pointer;
+}

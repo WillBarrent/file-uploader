@@ -106,10 +106,34 @@ async function addFolderPost(req, res) {
   res.redirect("/");
 }
 
+async function fileInfoGet(req, res) {
+  const { fileId } = req.params;
+
+  const prisma = new PrismaClient();
+
+  const fileInfo = await prisma.file.findFirst({
+    where: {
+      id: Number(fileId),
+    },
+  });
+
+  const uTime = fileInfo.uploadTime;
+
+  console.log(fileInfo);
+
+  res.render("file-info", {
+    fileInfo: {
+      ...fileInfo,
+      uploadTime: `${uTime.getDate()}/${uTime.getMonth()}/${uTime.getFullYear()}`,
+    },
+  });
+}
+
 module.exports = {
   indexGet,
   fileUploadPost,
   myFoldersGet,
   fileDownloadPost,
   addFolderPost,
+  fileInfoGet,
 };

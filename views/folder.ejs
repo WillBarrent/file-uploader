@@ -81,9 +81,8 @@
             <div class="storage__file--type">File</div>
             <div class="storage__file--uploaded"><%= file.uploadTime %></div>
             <div class="storage__file--actions">
-              <button class="storage__file--actions-info">Info</button>
-              <button class="storage__file--actions-edit">Edit</button>
-              <button class="storage__file--actions-delete">Delete</button>
+              <a href="/files/info/<%= file.id %>" class="storage__file--actions-info">Info</a>
+              <a href="/files/delete/<%= file.id %>" class="storage__file--actions-delete">Delete</a>
             </div>
           </div>
           <% }); %>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>File Info</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+  <div class="file-info__wrapper">
+    <a href="/" class="file-info__logo">File Uploader</a>
+    <div class="file-info">
+      <div class="file-info__title">File Info</div>
+      <form method="post" action="/download/<%= fileInfo.id %>" class="file-info__form">
+        <div class="file-info__name">
+          <div class="file-info__name--title">File name</div>
+          <div class="file-info__name--info"><%= fileInfo.originalName %></div>
+        </div>
+        <div class="file-info__uploaded">
+          <div class="file-info__uploaded--title">Uploaded time</div>
+          <div class="file-info__uploaded--info"><%= fileInfo.uploadTime %></div>
+        </div>
+        <div class="file-info__size">
+          <div class="file-info__size--title">File size</div>
+          <div class="file-info__size--info"><%= fileInfo.size %></div>
+        </div>
+        <input type="hidden" name="file_to_download" value="<%= fileInfo.path %>">
+        <input type="hidden" name="file_name" value="<%= fileInfo.originalName %>">
+        <button type="submit" class="file-info__download">Download</button>
+      </form>
+    </div>
+  </div>
+</body>
+
+</html>
