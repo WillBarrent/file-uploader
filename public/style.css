@@ -227,7 +227,8 @@ a {
 }
 
 .file-upload--wrapper,
-.create-folder--wrapper {
+.create-folder--wrapper,
+.edit-folder--wrapper {
   display: none;
 
   position: absolute;
@@ -236,7 +237,8 @@ a {
 }
 
 .file-upload,
-.create-folder {
+.create-folder,
+.edit-folder {
   width: 500px;
 
   background-color: #fff;
@@ -283,7 +285,8 @@ a {
 }
 
 .file-upload__close-button > svg,
-.create-folder__close-button > svg {
+.create-folder__close-button > svg,
+.edit-folder__close-button > svg {
   width: 30px;
   fill: #fff;
   background-color: #f25c54;
@@ -302,38 +305,45 @@ a {
   display: none;
 }
 
-.create-folder {
+.create-folder, .edit-folder {
   padding: 40px 20px;
 }
 
 .create-folder--folder-name,
-.create-folder--submit {
+.create-folder--submit,
+.edit-folder--folder-name,
+.edit-folder--submit {
   width: 100%;
 }
 
-.create-folder--title {
+.create-folder--title,
+.edit-folder--title {
   text-align: center;
   font-weight: 600;
   font-size: 25px;
 }
 
-.create-folder--folder-name {
+.create-folder--folder-name,
+.edit-folder--folder-name {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
-.create-folder--folder-name--label {
+.create-folder--folder-name--label,
+.edit-folder--folder-name--label {
   font-size: 20px;
 }
 
-.create-folder--folder-name--input {
+.create-folder--folder-name--input,
+.edit-folder--folder-name--input {
   padding: 5px 10px;
   font-family: inherit;
   font-size: 18px;
 }
 
-.create-folder--submit {
+.create-folder--submit,
+.edit-folder--submit {
   outline: none;
   border: none;
   font-size: 18px;
@@ -392,7 +402,7 @@ a {
 }
 
 .file-info__download {
-  margin-top: 10px;
+  margin-top: 10px ;
 
   outline: none;
   border: none;

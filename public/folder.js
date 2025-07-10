@@ -4,8 +4,6 @@ const fileUploadCloseButton = document.querySelector(
   ".file-upload__close-button"
 );
 
-
-
 addFileButton.addEventListener("click", () => {
   fileUploadForm.style.display = "block";
 });

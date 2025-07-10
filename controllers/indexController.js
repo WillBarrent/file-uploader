@@ -129,6 +129,55 @@ async function fileInfoGet(req, res) {
   });
 }
 
+async function folderDeleteGet(req, res) {
+  const { folderId } = req.params;
+  const prisma = new PrismaClient();
+
+  await prisma.file.deleteMany({
+    where: {
+      folderId: Number(folderId),
+    },
+  });
+
+  await prisma.folder.delete({
+    where: {
+      id: Number(folderId),
+    },
+  });
+
+  res.redirect("/");
+}
+
+async function fileDeleteGet(req, res) {
+  const { fileId } = req.params;
+  const prisma = new PrismaClient();
+
+  await prisma.file.delete({
+    where: {
+      id: fileId,
+    },
+  });
+
+  res.redirect("/");
+}
+
+async function folderUpdatePost(req, res) {
+  const { editFolderId, newFolderName } = req.body;
+
+  const prisma = new PrismaClient();
+
+  await prisma.folder.update({
+    where: {
+      id: Number(editFolderId),
+    },
+    data: {
+      name: newFolderName,
+    },
+  });
+
+  res.redirect("/");
+}
+
 module.exports = {
   indexGet,
   fileUploadPost,
@@ -136,4 +185,7 @@ module.exports = {
   fileDownloadPost,
   addFolderPost,
   fileInfoGet,
+  folderDeleteGet,
+  fileDeleteGet,
+  folderUpdatePost,
 };
