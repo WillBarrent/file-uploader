@@ -10,12 +10,15 @@ async function indexGet(req, res) {
   }
 
   const prisma = new PrismaClient();
+  const userId = Number(req.session.passport.user);
 
-  const files = await prisma.file.findMany();
-  const folders = await prisma.folder.findMany();
+  const folders = await prisma.folder.findMany({
+    where: {
+      userId: req.session.passport.user,
+    },
+  });
 
   res.render("index", {
-    files: files,
     folders: folders,
   });
 }

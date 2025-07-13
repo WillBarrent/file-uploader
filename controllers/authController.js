@@ -39,7 +39,7 @@ const signUpPost = async (req, res) => {
 
 const loginGet = (req, res) => {
   if (req.isAuthenticated()) {
-    return res.redirect("/upload-file");
+    return res.redirect("/");
   }
 
   res.render("login");
