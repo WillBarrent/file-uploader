@@ -3,7 +3,7 @@ require("dotenv").config();
 const path = require("node:path");
 const express = require("express");
 const app = express();
-const passport = require('passport');
+const passport = require("passport");
 
 const expressSession = require("express-session");
 const { PrismaSessionStore } = require("@quixo3/prisma-session-store");
@@ -36,6 +36,27 @@ app.use(
 );
 
 require("./passport");
+
+app.get("/{*splat}", async (req, res, next) => {
+  if (
+    req.session.passport !== undefined &&
+    req.session.passport.user !== undefined &&
+    req.session.passport.username === undefined
+  ) {
+    const prisma = new PrismaClient();
+    const userId = req.session.passport.user;
+
+    const user = await prisma.user.findFirst({
+      where: {
+        id: userId,
+      },
+    });
+
+    req.session.passport.username = user.username;
+  }
+
+  next();
+});
 
 app.use(passport.initialize());
 app.use(passport.session());
