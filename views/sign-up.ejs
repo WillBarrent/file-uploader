@@ -1,21 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
 </head>
+
 <body>
-    <form action="/sign-up" method="post">
-        <div>
-            <label for="">Username</label>
-            <input type="text" name="username">
-        </div>
-        <div>
-            <label for="">Password</label>
-            <input type="text" name="password">
-        </div>
-        <button type="submit">Submit</button>
+  <div class="sign-up">
+    <h1 class="sign-up__file-uploader--title">File Uploader</h1>
+    <form action="/sign-up" method="post" class="sign-up__form">
+      <div class="sign-up__title">Sign Up</div>
+      <div class="sign-up__username">
+        <label for="username" class="sign-up__username--label">Username</label>
+        <input name="username" id="username" type="text" class="sign-up__username--input">
+      </div>
+      <div class="sign-up__password">
+        <label for="password" class="sign-up__password--label">Password</label>
+        <input name="password" id="password" type="text" class="sign-up__password--input">
+      </div>
+      <button type="submit" class="sign-up__submit">Sign Up</button>
+      <a href="/login" class="sign-up__create-account-link">Create an account</a>
     </form>
+  </div>
 </body>
+
 </html>
