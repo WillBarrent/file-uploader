@@ -20,6 +20,7 @@ async function indexGet(req, res) {
 
   res.render("index", {
     folders: folders,
+    username: req.session.passport.username,
   });
 }
 
@@ -50,6 +51,7 @@ async function myFoldersGet(req, res) {
         uploadTime: `${uTime.getDate()}/${uTime.getMonth()}/${uTime.getFullYear()}`,
       };
     }),
+    username: req.session.passport.username,
   });
 }
 
