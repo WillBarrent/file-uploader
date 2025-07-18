@@ -1,5 +1,8 @@
 const multer = require("multer");
 const { PrismaClient } = require("../generated/prisma");
+const cloudinary = require("cloudinary").v2;
+const http = require("http");
+
 const upload = multer({
   dest: "/home/barrent/Desktop/NodeJS/file-uploader/uploads",
 });
@@ -14,7 +17,7 @@ async function indexGet(req, res) {
 
   const folders = await prisma.folder.findMany({
     where: {
-      userId: req.session.passport.user,
+      userId: userId,
     },
   });
 
@@ -64,9 +67,26 @@ const fileUploadPost = [
 
     const prisma = new PrismaClient();
 
+    const cloudinaryFilePath = "username" + folderName + "/" + path;
+
+    const cloudinaryFileUploadResult = await cloudinary.uploader
+      .upload(path, { public_id: cloudinaryFilePath, resource_type: "auto" })
+      .then((result) => {
+        return {
+          message: "Success",
+          url: result.url,
+        };
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
     await prisma.folder.update({
       where: {
-        name: folderName,
+        uniqueFolderForUser: {
+          name: folderName,
+          userId: req.session.passport.user,
+        },
       },
       data: {
         files: {
@@ -74,7 +94,7 @@ const fileUploadPost = [
             {
               fileName: filename,
               originalName: originalname,
-              path: path,
+              path: cloudinaryFileUploadResult.url,
               size: size,
               uploadTime: uploadTime,
             },
@@ -92,7 +112,12 @@ const fileUploadPost = [
 async function fileDownloadPost(req, res) {
   const { file_to_download: fileToDownload, file_name: fileName } = req.body;
 
-  res.download(fileToDownload, fileName);
+  let request = http.request(fileToDownload, function (response) {
+    res.setHeader("content-disposition", "attachment; filename=" + fileName);
+    response.pipe(res);
+  });
+
+  request.end();
 }
 
 async function addFolderPost(req, res) {
@@ -123,8 +148,6 @@ async function fileInfoGet(req, res) {
   });
 
   const uTime = fileInfo.uploadTime;
-
-  console.log(fileInfo);
 
   res.render("file-info", {
     fileInfo: {
@@ -159,7 +182,7 @@ async function fileDeleteGet(req, res) {
 
   await prisma.file.delete({
     where: {
-      id: fileId,
+      id: Number(fileId),
     },
   });
 
