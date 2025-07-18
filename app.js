@@ -4,8 +4,9 @@ const path = require("node:path");
 const express = require("express");
 const app = express();
 const passport = require("passport");
-
 const expressSession = require("express-session");
+const cloudinary = require("cloudinary").v2;
+
 const { PrismaSessionStore } = require("@quixo3/prisma-session-store");
 const { PrismaClient } = require("./generated/prisma");
 const authRouter = require("./routes/authRoute");
@@ -18,6 +19,14 @@ app.set("view engine", "ejs");
 
 app.use(express.static(assetsPath));
 app.use(express.urlencoded({ extended: true }));
+
+
+
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.CLOUD_API,
+  api_secret: process.env.CLOUD_API_SECRET,
+});
 
 app.use(
   expressSession({
