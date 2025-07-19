@@ -11,6 +11,8 @@ const { PrismaSessionStore } = require("@quixo3/prisma-session-store");
 const { PrismaClient } = require("./generated/prisma");
 const authRouter = require("./routes/authRoute");
 const indexRouter = require("./routes/indexRoute");
+const fileRouter = require("./routes/fileRoute");
+const folderRouter = require("./routes/folderRoute");
 
 const assetsPath = path.join(__dirname, "public");
 
@@ -19,8 +21,6 @@ app.set("view engine", "ejs");
 
 app.use(express.static(assetsPath));
 app.use(express.urlencoded({ extended: true }));
-
-
 
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
@@ -72,6 +72,8 @@ app.use(passport.session());
 
 app.use("/", authRouter);
 app.use("/", indexRouter);
+app.use("/", fileRouter);
+app.use("/", folderRouter);
 
 const PORT = 3000;
 
