@@ -431,3 +431,12 @@ a {
 
   cursor: pointer;
 }
+
+.sign-up__errors-table {
+  background-color: #f25c54;
+}
+
+.sign-up__errors {
+  padding: 10px 25px;
+  color: #fff;
+}

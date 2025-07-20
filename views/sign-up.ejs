@@ -25,7 +25,16 @@
         <input name="password" id="password" type="password" class="sign-up__password--input">
       </div>
       <button type="submit" class="sign-up__submit">Sign Up</button>
-      <a href="/login" class="sign-up__create-account-link">Create an account</a>
+      <a href="/login" class="sign-up__create-account-link">Already have an account?</a>
+      <% if (locals.errors) { %>
+      <div class="sign-up__errors-table">
+        <ul class="sign-up__errors">
+          <% locals.errors.forEach((error) => { %>
+          <li class="sign-up__error"><%= error.msg %></li>
+          <% }); %>
+        </ul>
+      </div>
+      <% } %>
     </form>
   </div>
 </body>

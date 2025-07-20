@@ -1,5 +1,6 @@
 const { PrismaClient } = require("../generated/prisma");
 const { hashPassword } = require("../utils/passwordUtils");
+const { validationResult } = require("express-validator");
 const passport = require("passport");
 
 const signUpGet = (req, res) => {
@@ -10,31 +11,40 @@ const signUpGet = (req, res) => {
   res.render("sign-up");
 };
 
-const signUpPost = async (req, res) => {
-  if (req.isAuthenticated()) {
-    return res.redirect("/");
-  }
+const signUpPost = async (req, res, next) => {
+  try {
+    const errors = validationResult(req);
 
-  const { username, password } = req.body;
-  const hashedPassword = await hashPassword(password);
+    if (!errors.isEmpty()) {
+      console.log(errors);
+      return res.render("sign-up", {
+        errors: errors.errors,
+      });
+    }
 
-  const prisma = new PrismaClient();
+    const { username, password } = req.body;
+    const hashedPassword = await hashPassword(password);
 
-  await prisma.user.create({
-    data: {
-      username: username,
-      password: hashedPassword,
-      folders: {
-        create: [
-          {
-            name: "my-drive",
-          },
-        ],
+    const prisma = new PrismaClient();
+
+    await prisma.user.create({
+      data: {
+        username: username,
+        password: hashedPassword,
+        folders: {
+          create: [
+            {
+              name: "my-drive",
+            },
+          ],
+        },
       },
-    },
-  });
+    });
 
-  res.redirect("/login");
+    res.redirect("/login");
+  } catch (err) {
+    next(err);
+  }
 };
 
 const loginGet = (req, res) => {
@@ -66,5 +76,5 @@ module.exports = {
   signUpPost,
   loginGet,
   loginPost,
-  logOutGet
+  logOutGet,
 };
