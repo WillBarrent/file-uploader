@@ -35,7 +35,6 @@ const editFolderValidation = [
 
 module.exports = {
   signUpValidation,
-  loginValidation,
   newFolderValidation,
   editFolderValidation,
 };
