@@ -8,13 +8,17 @@ const {
   loginPost,
   logOutGet,
 } = require("../controllers/authController");
+const {
+  signUpValidation,
+  loginValidation,
+} = require("../utils/validatonUtils");
 
 authRouter.get("/sign-up", signUpGet);
-authRouter.post("/sign-up", signUpPost);
+authRouter.post("/sign-up", signUpValidation, signUpPost);
 
 authRouter.get("/login", loginGet);
-authRouter.post("/login", loginPost);
+authRouter.post("/login", loginValidation, loginPost);
 
-authRouter.get("/log-out", logOutGet)
+authRouter.get("/log-out", logOutGet);
 
 module.exports = authRouter;
