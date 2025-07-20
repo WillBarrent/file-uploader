@@ -5,7 +5,6 @@ const {
   signUpGet,
   signUpPost,
   loginGet,
-  loginPost,
   logOutGet,
 } = require("../controllers/authController");
 const {
@@ -17,7 +16,7 @@ authRouter.get("/sign-up", signUpGet);
 authRouter.post("/sign-up", signUpValidation, signUpPost);
 
 authRouter.get("/login", loginGet);
-authRouter.post("/login", loginValidation, loginPost);
+authRouter.post("/login", loginValidation);
 
 authRouter.get("/log-out", logOutGet);
 
