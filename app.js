@@ -75,7 +75,7 @@ app.use("/", indexRouter);
 app.use("/", fileRouter);
 app.use("/", folderRouter);
 
-const PORT = 3000;
+const PORT = process.env.PORT;
 
 app.listen(PORT, () => {
   console.log("App is listening on port", PORT);

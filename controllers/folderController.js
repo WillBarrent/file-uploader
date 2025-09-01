@@ -5,19 +5,40 @@ async function myFoldersGet(req, res) {
     return res.redirect("/login");
   }
 
-  const { folderName } = req.params;
+  const { folderName, headFolderId } = req.params;
 
   const prisma = new PrismaClient();
+  const userId = Number(req.session.passport.user);
+  let isPreviousMain = false;
 
-  const files = await prisma.file.findMany({
+  const previousFolder = await prisma.folder.findFirst({
     where: {
-      folder: {
-        name: folderName,
-      },
+      id: Number(headFolderId),
     },
   });
 
-  res.render("folder", {
+  console.log(previousFolder);
+
+  if (previousFolder.headFolderId === null) {
+    isPreviousMain = true;
+  }
+
+  const headFolder = await prisma.folder.findFirst({
+    where: {
+      name: folderName,
+      headFolderId: Number(headFolderId),
+      userId: userId,
+    },
+    include: {
+      folders: true,
+      files: true,
+    },
+  });
+
+  const folders = headFolder.folders;
+  const files = headFolder.files;
+
+  res.render("index", {
     folderName: folderName,
     files: files.map((file) => {
       const uTime = file.uploadTime;
@@ -27,24 +48,60 @@ async function myFoldersGet(req, res) {
         uploadTime: `${uTime.getDate()}/${uTime.getMonth()}/${uTime.getFullYear()}`,
       };
     }),
+    folders: folders,
+    mainHeadFolderId: headFolder.id,
+    headFolderId: headFolderId,
     username: req.session.passport.username,
+    isPreviousMain: isPreviousMain,
+    previousFolderName: previousFolder.name,
+    previousFolderId: previousFolder.headFolderId
   });
 }
 
 async function addFolderPost(req, res) {
   const { newFolderName } = req.body;
+  const { folderName, headFolderId } = req.params;
+
+  console.log(headFolderId);
 
   const prisma = new PrismaClient();
   const userId = req.session.passport.user;
 
-  await prisma.folder.create({
-    data: {
-      name: newFolderName,
+  const uploadTime = new Date();
+
+  const headFolder = await prisma.folder.findFirst({
+    where: {
       userId: userId,
+      name: folderName,
+      headFolderId: Number(headFolderId),
     },
   });
 
-  res.redirect("/");
+  const newFolder = await prisma.folder.create({
+    data: {
+      name: newFolderName,
+      userId: userId,
+      uploadTime: uploadTime,
+    },
+  });
+
+  await prisma.folder.update({
+    where: {
+      id: headFolder.id,
+      userId: userId,
+      headFolderId: headFolder.headFolderId,
+      name: folderName,
+    },
+    data: {
+      folders: {
+        connect: {
+          id: newFolder.id,
+        },
+      },
+    },
+  });
+
+  res.redirect(`/folders/${headFolder.name}/${headFolder.headFolderId}`);
 }
 
 async function folderDeleteGet(req, res) {
@@ -63,7 +120,7 @@ async function folderDeleteGet(req, res) {
     },
   });
 
-  res.redirect("/");
+  res.redirect("/folders/main");
 }
 
 async function folderUpdatePost(req, res) {
@@ -80,7 +137,7 @@ async function folderUpdatePost(req, res) {
     },
   });
 
-  res.redirect("/");
+  res.redirect("/folders/main");
 }
 
 module.exports = {

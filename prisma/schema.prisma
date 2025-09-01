@@ -29,13 +29,17 @@ model User {
 }
 
 model Folder {
-  id     Int    @id @default(autoincrement())
-  name   String
-  files  File[]
-  user   User   @relation(fields: [userId], references: [id])
-  userId Int
+  id           Int      @id @default(autoincrement())
+  name         String
+  uploadTime   DateTime
+  user         User     @relation(fields: [userId], references: [id])
+  userId       Int
+  files        File[]
+  headFolderId Int?
+  headFolder   Folder?  @relation("FoldersInsideFolder", fields: [headFolderId], references: [id])
+  folders      Folder[] @relation("FoldersInsideFolder")
 
-  @@unique([name, userId], name: "uniqueFolderForUser")
+  @@unique([name, headFolderId, userId], name: "uniqueFolderForUser")
 }
 
 model File {

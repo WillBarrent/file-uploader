@@ -55,7 +55,7 @@ const fileUploadPost = [
 
     await prisma.$disconnect();
 
-    res.redirect("/");
+    res.redirect("/folders/main");
   },
 ];
 
@@ -101,7 +101,7 @@ async function fileDeleteGet(req, res) {
     },
   });
 
-  res.redirect("/");
+  res.redirect("/folders/main");
 }
 
 module.exports = {

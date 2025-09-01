@@ -9,24 +9,57 @@
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/style.css">
   <script src="/index.js" defer></script>
+  <script src="/folder.js" defer></script>
 </head>
 
 <body>
   <div class="create-folder--wrapper">
-    <form method="post" action="/add-folder" class="create-folder">
-      <div class="create-folder--title">Create a new folder</div>
-      <div class="create-folder--folder-name">
-        <label for="folder-name" class="create-folder--folder-name--label">Folder name</label>
-        <input name="newFolderName" placeholder="Folder name" type="text" class="create-folder--folder-name--input" id="folder-name">
-      </div>
-      <button type="submit" class="create-folder--submit">Create a folder</button>
-      <button type="button" class="create-folder__close-button">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-          <title>close</title>
-          <path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
-        </svg>
-      </button>
-    </form>
+    <% if (locals.headFolderId !== undefined && locals.isMain === undefined) { %>
+    <form method="post" action="/folders/add/<%= folderName %>/<%= headFolderId %>" class="create-folder">
+      <% } else { %>
+      <form method="post" action="/folders/add/main" class="create-folder">
+        <% } %>
+        <div class="create-folder--title">Create a new folder</div>
+        <div class="create-folder--folder-name">
+          <label for="folder-name" class="create-folder--folder-name--label">Folder name</label>
+          <input name="newFolderName" placeholder="Folder name" type="text" class="create-folder--folder-name--input" id="folder-name">
+        </div>
+        <button type="submit" class="create-folder--submit">Create a folder</button>
+        <button type="button" class="create-folder__close-button">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <title>close</title>
+            <path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
+          </svg>
+        </button>
+      </form>
+  </div>
+
+  <div class="file-upload--wrapper">
+    <% if (locals.headFolderId !== undefined && locals.isMain === undefined) { %>
+    <form method="post" action="/files/add/<%= folderName %>/<%= headFolderId %>" class="file-upload" enctype="multipart/form-data">
+      <% } else { %>
+      <form method="post" action="/files/add/main" class="file-upload" enctype="multipart/form-data">
+        <% } %>
+        <div class="file__upload__icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <title>upload</title>
+            <path d="M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5Z" />
+          </svg>
+        </div>
+        <div class="file-upload__upload">
+          <input type="file" id="file" class="file-upload__upload--file" name="file">
+          <label class="file-upload__upload--button" for="file">Click to upload</label>
+          <div class="file-upload__additional">and click sumbit button</div>
+        </div>
+        <div class="file-uploade__max-size">Maximum file size 50 MB.</div>
+        <button class="file-upload__upload--submit" type="submit">Submit</button>
+        <button type="button" class="file-upload__close-button">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <title>close</title>
+            <path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
+          </svg>
+        </button>
+      </form>
   </div>
 
   <div class="edit-folder--wrapper">
@@ -56,14 +89,24 @@
       </div>
     </header>
     <main class="main">
-      <div class="main__actions">
-        <button class="main__actions--add-folder">Add folder</button>
+      <div class="main__actions<%= (locals.isPreviousMain !== undefined) ? "" : " main__actions--main" %>">
+        <% if (locals.isPreviousMain !== undefined && isPreviousMain === true) { %>
+        <a href="/folders/main" class="main__actions__previous-page-link">Main</a>
+        <% } else if ((locals.isPreviousMain !== undefined && isPreviousMain === false)) { %>
+        <a href="/folders/<%= previousFolderName %>/<%= previousFolderId %>" class="main__actions__previous-page-link"><%= previousFolderName %></a>
+        <% } %>
+
+        <div class="main__actions--buttons">
+          <button class="main__actions--add-folder">Add folder</button>
+          <button class="main__actions--add-file">Add file</button>
+        </div>
       </div>
       <div class="storage">
         <div class="storage__columns">
           <div class="storage__column">Name</div>
           <div class="storage__column">Size</div>
           <div class="storage__column">Type</div>
+          <div class="storage__column">Uploaded</div>
           <div class="storage__column">Actions</div>
         </div>
         <div class="storage__folders">
@@ -76,10 +119,11 @@
                   <path d="M10,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V8C22,6.89 21.1,6 20,6H12L10,4Z" />
                 </svg>
               </div>
-              <a href="/folders/<%= folder.name %>" class="storage__folder--name"><%= folder.name %></a>
+              <a href="/folders/<%= folder.name %>/<%= mainHeadFolderId %>" class="storage__folder--name"><%= folder.name %></a>
             </div>
             <div class="storage__folder--size">50 GB</div>
             <div class="storage__folder--type">Folder</div>
+            <div class="storage__file--uploaded">25/02/2000</div>
             <div class="storage__folder--actions">
               <input type="hidden" value="<%= folder.id %>" class="storage__folder--actions-edit--input">
               <button class="storage__folder--actions-edit">Edit</button>

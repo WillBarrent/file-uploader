@@ -5,7 +5,7 @@ const passport = require("passport");
 
 const signUpGet = (req, res) => {
   if (req.isAuthenticated()) {
-    return res.redirect("/");
+    return res.redirect("/folders/main");
   }
 
   res.render("sign-up");
@@ -27,14 +27,17 @@ const signUpPost = async (req, res, next) => {
 
     const prisma = new PrismaClient();
 
-    await prisma.user.create({
+    const uploadTime = new Date();
+
+    const user = await prisma.user.create({
       data: {
         username: username,
         password: hashedPassword,
         folders: {
           create: [
             {
-              name: "my-drive",
+              name: "main",
+              uploadTime: uploadTime,
             },
           ],
         },
@@ -49,7 +52,7 @@ const signUpPost = async (req, res, next) => {
 
 const loginGet = (req, res) => {
   if (req.isAuthenticated()) {
-    return res.redirect("/");
+    return res.redirect("/folders/main");
   }
 
   res.render("login");
@@ -57,7 +60,7 @@ const loginGet = (req, res) => {
 
 const loginPost = passport.authenticate("local", {
   failureRedirect: "/login",
-  successRedirect: "/",
+  successRedirect: "/folders/main",
   failureMessage: true,
 });
 
@@ -67,7 +70,7 @@ const logOutGet = async (req, res) => {
       return next(err);
     }
 
-    res.redirect("/");
+    res.redirect("/login");
   });
 };
 
